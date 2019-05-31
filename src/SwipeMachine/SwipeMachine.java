@@ -38,21 +38,20 @@ public class SwipeMachine extends javax.swing.JFrame {
     DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
     //get current date time with Date()
     Date date = new Date();
-    
+
     String currentUsersHomeDir = System.getProperty("user.home");
-    
+
     /**
      * Creates new form SwipeMachine
      */
     public SwipeMachine() {
         initComponents();
-        
-        
+
         StyledDocument doc = aboutDialogTextPane.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        
+
 //        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
 //        //get current date time with Date()
 //        Date date = new Date();
@@ -130,16 +129,17 @@ public class SwipeMachine extends javax.swing.JFrame {
         aboutDialogBoxPanel.setLayout(new java.awt.GridBagLayout());
 
         aboutDialogLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        aboutDialogLabel.setText("Swipe Machine v2.1");
+        aboutDialogLabel.setText("Swipe Machine v1.0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 0);
         aboutDialogBoxPanel.add(aboutDialogLabel, gridBagConstraints);
 
         aboutDialogTextPane.setEditable(false);
         aboutDialogTextPane.setBorder(null);
+        aboutDialogTextPane.setContentType("text/html");
         aboutDialogTextPane.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        aboutDialogTextPane.setText("\nCreated By\nCPL Thomas Goodman\n\nFor any problems:\n0211221564");
-        aboutDialogTextPane.setPreferredSize(new java.awt.Dimension(140, 120));
+        aboutDialogTextPane.setText("<html><center><p style=\"font-family: Calibri, sanserif; font-size:14pt\">Created By:<br>Thomas Goodman<br><br>For any problems:<br>Email: thomas.goodman@nzdf.mil.nz<br>Call: 021 1221 564</p></center></html>");
+        aboutDialogTextPane.setPreferredSize(new java.awt.Dimension(200, 180));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 2;
         aboutDialogBoxPanel.add(aboutDialogTextPane, gridBagConstraints);
@@ -150,19 +150,19 @@ public class SwipeMachine extends javax.swing.JFrame {
             aboutDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(aboutDialogBoxLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(aboutDialogBoxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(aboutDialogBoxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
                 .addContainerGap())
         );
         aboutDialogBoxLayout.setVerticalGroup(
             aboutDialogBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(aboutDialogBoxLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(aboutDialogBoxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(aboutDialogBoxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Swipe Machine v2.0");
+        setTitle("Swipe Machine v1.0");
         setExtendedState(MAXIMIZED_BOTH);
         setMinimumSize(new java.awt.Dimension(1000, 700));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -176,7 +176,7 @@ public class SwipeMachine extends javax.swing.JFrame {
 
         titleLabel.setFont(new java.awt.Font("Calibri", 1, 30)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("Swipe Machine v2.1");
+        titleLabel.setText("Swipe Machine v1.0");
 
         infoLabel.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         infoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -341,6 +341,11 @@ public class SwipeMachine extends javax.swing.JFrame {
         noOfMembersFormattedTextField.setMaximumSize(new java.awt.Dimension(150, 25));
         noOfMembersFormattedTextField.setMinimumSize(new java.awt.Dimension(150, 25));
         noOfMembersFormattedTextField.setPreferredSize(new java.awt.Dimension(150, 25));
+        noOfMembersFormattedTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                noOfMembersFormattedTextFieldKeyReleased(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -680,7 +685,7 @@ public class SwipeMachine extends javax.swing.JFrame {
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         if (evt.getSource() == exitMenuItem) {
-            
+
             int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit Program?", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (reply == JOptionPane.YES_OPTION) {
                 System.exit(0);
@@ -694,14 +699,14 @@ public class SwipeMachine extends javax.swing.JFrame {
 
     private void swipedMembersInputTextKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_swipedMembersInputTextKeyReleased
         int keyCode = evt.getKeyCode();
-            if (keyCode == KeyEvent.VK_ENTER) {
-                inputString = swipedMembersInputText.getText();
-                System.out.println(convertToServiceNo(inputString));
+        if (keyCode == KeyEvent.VK_ENTER) {
+            inputString = swipedMembersInputText.getText();
+            System.out.println(convertToServiceNo(inputString));
 
-                addToSwipeList(convertToServiceNo(inputString));
+            addToSwipeList(convertToServiceNo(inputString));
 
-                swipedMembersInputText.setText("");
-            }
+            swipedMembersInputText.setText("");
+        }
     }//GEN-LAST:event_swipedMembersInputTextKeyReleased
 
     private void membersListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_membersListMouseClicked
@@ -711,7 +716,7 @@ public class SwipeMachine extends javax.swing.JFrame {
                 addToSwipeList(membersList.getSelectedValue().getServiceNo());
             }
         }
-        
+
         swipedMembersInputText.requestFocus();
     }//GEN-LAST:event_membersListMouseClicked
 
@@ -739,12 +744,12 @@ public class SwipeMachine extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        int confirmed = JOptionPane.showConfirmDialog(null, 
-        "Are you sure you want to exit the program?", "Exit Program",
-        JOptionPane.YES_NO_OPTION);
+        int confirmed = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to exit the program?", "Exit Program",
+                JOptionPane.YES_NO_OPTION);
 
         if (confirmed == JOptionPane.YES_OPTION) {
-          dispose();
+            dispose();
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -778,11 +783,19 @@ public class SwipeMachine extends javax.swing.JFrame {
         swipedMembersInputText.requestFocus();
     }//GEN-LAST:event_percentForQuorumSpinnerStateChanged
 
-    
-    
-    
-    
-    
+    private void noOfMembersFormattedTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noOfMembersFormattedTextFieldKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (noOfMembersFormattedTextField.isEditValid()) {
+                nomRollCount = Integer.parseInt(noOfMembersFormattedTextField.getText());
+            } else {
+                noOfMembersFormattedTextField.setText(Integer.toString(nomRollCount));
+            }
+
+            swipedMembersInputText.requestFocus();
+            updateCount();
+        }
+    }//GEN-LAST:event_noOfMembersFormattedTextFieldKeyReleased
+
     public void importList() {
         fileChooser.setCurrentDirectory(new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath()));
         returnValue = fileChooser.showOpenDialog(null);
@@ -794,7 +807,6 @@ public class SwipeMachine extends javax.swing.JFrame {
 //                    System.out.println("File chosen");
 //                    System.out.println(fileChooser.getName(selectedFile));
 //                    System.out.println(fileChooser.getFileFilter().getDescription());
-
             nomRollArray = makeNomRoll(readFile(selectedFile.getAbsolutePath()));
 
             Collections.sort(nomRollArray);
@@ -804,12 +816,11 @@ public class SwipeMachine extends javax.swing.JFrame {
                 nomRollListModel.addElement(nomRollArray.get(i));
             }
 
+            nomRollCount = nomRollArray.size();
             updateCount();
         }
     }
-    
-    
-    
+
     public void clearMemberList() {
         int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to clear the Members List?", "Clear List?", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (reply == JOptionPane.YES_OPTION) {
@@ -818,9 +829,7 @@ public class SwipeMachine extends javax.swing.JFrame {
             updateCount();
         }
     }
-    
-    
-    
+
     public ArrayList<String> readFile(String fileName) {
 
         ArrayList<String> lines = new ArrayList<>();
@@ -833,7 +842,7 @@ public class SwipeMachine extends javax.swing.JFrame {
             while ((line = bufferedReader.readLine()) != null) {
                 lines.add(line);
             }
-            
+
             bufferedReader.close();
 
         } catch (FileNotFoundException e) {
@@ -844,9 +853,7 @@ public class SwipeMachine extends javax.swing.JFrame {
 
         return lines;
     }
-    
-    
-    
+
     public ArrayList<Person> makeNomRoll(ArrayList<String> stringList) {
 
         ArrayList<Person> tempPersonList = new ArrayList<>();
@@ -880,8 +887,7 @@ public class SwipeMachine extends javax.swing.JFrame {
 
         return tempPersonList;
     }
-    
-    
+
     public String convertToServiceNo(String in) {
         String out = "";
 
@@ -895,8 +901,7 @@ public class SwipeMachine extends javax.swing.JFrame {
 
         return out;
     }
-    
-    
+
     public void addToSwipeList(String id) {
 
         boolean addPerson = true;
@@ -927,7 +932,7 @@ public class SwipeMachine extends javax.swing.JFrame {
                     swipedNoText.setText(Integer.toString(swipedInCount));
 
                     backUp(person);
-                    
+
                     // play success sound
                     try {
                         AudioClip clip = Applet.newAudioClip(new URL("file", "localhost", "sounds/accept2.wav"));
@@ -935,18 +940,18 @@ public class SwipeMachine extends javax.swing.JFrame {
                     } catch (MalformedURLException ex) {
                         Logger.getLogger(SwipeMachine.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
+
                     found = true;
                 }
             }
         }
-        
+
         if (id.length() >= 6 && id.length() <= 8 && !found && addPerson) {
             swipedInArray.add(new Person(id.toUpperCase(), "-", "Not In Roll"));
             swipeListModel.add(0, swipedInArray.get(swipedInArray.size() - 1));
             swipedInCount++;
             swipedNoText.setText(Integer.toString(swipedInCount));
-            
+
             // play success sound
             try {
                 AudioClip clip = Applet.newAudioClip(new URL("file", "localhost", "sounds/accept2.wav"));
@@ -955,14 +960,12 @@ public class SwipeMachine extends javax.swing.JFrame {
                 Logger.getLogger(SwipeMachine.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         found = false;
-        
+
         checkQuorum();
     }
-    
-    
-    
+
     public void removeLastSwiped() {
         if (swipedInArray.size() > 0) {
             swipedInArray.remove(swipedInArray.size() - 1);
@@ -973,59 +976,52 @@ public class SwipeMachine extends javax.swing.JFrame {
             checkQuorum();
         }
     }
-    
-    
-    
+
     public void removeSelectedSwiped() {
-        
+
     }
-    
-    
-    
+
     public void checkQuorum() {
         if (swipedInCount < quorumCount) {
-            quorumMetLabel.setForeground(new Color(255,0,50));
+            quorumMetLabel.setForeground(new Color(255, 0, 50));
             quorumMetLabel.setText("QUORUM NOT MET");
         } else if (swipedInCount > quorumCount) {
-            quorumMetLabel.setForeground(new Color(0,200,0));
+            quorumMetLabel.setForeground(new Color(0, 200, 0));
             quorumMetLabel.setText("QUORUM OBTAINED");
         }
     }
-    
-    
+
     public void updateCount() {
-        nomRollCount = nomRollArray.size();
-        quorumCount = (int) (nomRollCount * ((Integer)percentForQuorumSpinner.getValue()) / 100);
-        
+        //nomRollCount = nomRollArray.size();
+        quorumCount = (int) (nomRollCount * ((Integer) percentForQuorumSpinner.getValue()) / 100);
+
 //        swipeNoLabel.setText(Integer.toString(swipedInCount));
         noOfMembersFormattedTextField.setText(Integer.toString(nomRollCount));
         noRequiredFormattedTextField.setText(Integer.toString(quorumCount));
     }
-    
-    
-    
+
     public void saveToTextFile() {
-        
+
         String line = null;
         Boolean write = true;
-        
+
         fileChooser.setCurrentDirectory(new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath()));
 
         returnValue = fileChooser.showSaveDialog(null);
-        
+
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            
+
             File selectedFile = fileChooser.getSelectedFile();
-            
-            if(selectedFile.exists()) {
+
+            if (selectedFile.exists()) {
                 int reply = JOptionPane.showConfirmDialog(null, "Do you want to overwrite the selected file?", "File Exists!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                
-                if(reply == JOptionPane.NO_OPTION) {
+
+                if (reply == JOptionPane.NO_OPTION) {
                     write = false;
                 }
             }
-            
-            if(write) {
+
+            if (write) {
                 try {
                     FileWriter writer = new FileWriter(selectedFile + ".csv", false);
 
@@ -1080,33 +1076,29 @@ public class SwipeMachine extends javax.swing.JFrame {
                 }
             }
         }
-        
+
     }
-    
-    
-    
+
     public void backUp(Person person) {
-        
+
 //        ArrayList<String> lines = new ArrayList<>();
         String line = null;
-        
+
 //        Collections.sort(swipeArray);
-        
         line = person.getServiceNo() + "," + person.getRank() + "," + person.getFirstName() + "," + person.getLastName();
 //            lines.add(line);
-        
+
         try {
-            FileWriter writer = new FileWriter("./backup/" + meetingNameTextField.getText() + "-" + dateFormat.format(date) +  ".csv", true);
+            FileWriter writer = new FileWriter("./backup/" + meetingNameTextField.getText() + "-" + dateFormat.format(date) + ".csv", true);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            
+
 //            for (String per : lines) {
 //                bufferedWriter.write(per);
 //                bufferedWriter.newLine();
 //            }
-            
             bufferedWriter.write(line);
             bufferedWriter.newLine();
-            
+
             bufferedWriter.flush();
             bufferedWriter.close();
 
@@ -1116,7 +1108,7 @@ public class SwipeMachine extends javax.swing.JFrame {
             System.out.println("Error writing File!" + e);
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -1161,7 +1153,7 @@ public class SwipeMachine extends javax.swing.JFrame {
     private final DefaultListModel<Person> swipeListModel = new DefaultListModel<>();
     private final DefaultListModel<Person> nomRollListModel = new DefaultListModel<>();
     private String inputString;
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog aboutDialogBox;
     private javax.swing.JPanel aboutDialogBoxPanel;
@@ -1215,5 +1207,3 @@ public class SwipeMachine extends javax.swing.JFrame {
     private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
 }
-
-
