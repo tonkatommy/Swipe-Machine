@@ -353,6 +353,11 @@ public class SwipeMachine extends javax.swing.JFrame {
         percentForQuorumSpinner.setMaximumSize(new java.awt.Dimension(150, 28));
         percentForQuorumSpinner.setMinimumSize(new java.awt.Dimension(150, 28));
         percentForQuorumSpinner.setPreferredSize(new java.awt.Dimension(150, 28));
+        percentForQuorumSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                percentForQuorumSpinnerStateChanged(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -767,6 +772,12 @@ public class SwipeMachine extends javax.swing.JFrame {
         removeLastSwiped();
     }//GEN-LAST:event_removedLastSwipedButtonMouseReleased
 
+    private void percentForQuorumSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_percentForQuorumSpinnerStateChanged
+        //System.out.println(evt.getSource());
+        updateCount();
+        swipedMembersInputText.requestFocus();
+    }//GEN-LAST:event_percentForQuorumSpinnerStateChanged
+
     
     
     
@@ -953,12 +964,14 @@ public class SwipeMachine extends javax.swing.JFrame {
     
     
     public void removeLastSwiped() {
-        swipedInArray.remove(swipedInArray.size() - 1);
-        swipeListModel.remove(0);
-        swipedInCount--;
-        swipedNoText.setText(Integer.toString(swipedInCount));
-        
-        checkQuorum();
+        if (swipedInArray.size() > 0) {
+            swipedInArray.remove(swipedInArray.size() - 1);
+            swipeListModel.remove(0);
+            swipedInCount--;
+            swipedNoText.setText(Integer.toString(swipedInCount));
+
+            checkQuorum();
+        }
     }
     
     
@@ -973,7 +986,7 @@ public class SwipeMachine extends javax.swing.JFrame {
         if (swipedInCount < quorumCount) {
             quorumMetLabel.setForeground(new Color(255,0,50));
             quorumMetLabel.setText("QUORUM NOT MET");
-        } else {
+        } else if (swipedInCount > quorumCount) {
             quorumMetLabel.setForeground(new Color(0,200,0));
             quorumMetLabel.setText("QUORUM OBTAINED");
         }
