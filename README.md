@@ -21,7 +21,7 @@ If a column is blank for any entries other than the service number it will displ
 
 - Run the "SwipeMachine.jar" file.
 
-## Configurating the program
+## Configuring the program
 
 ### Information
 - **Meeting Name:** Enter the name for the meeting.
