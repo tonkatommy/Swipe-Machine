@@ -46,7 +46,7 @@
             <Component class="javax.swing.JLabel" name="aboutDialogLabel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Calibri" size="18" style="0"/>
+                  <Font name="Calibri" size="24" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Swipe Machine v1.0"/>
               </Properties>

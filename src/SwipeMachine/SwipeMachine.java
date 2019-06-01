@@ -128,7 +128,7 @@ public class SwipeMachine extends javax.swing.JFrame {
         aboutDialogBoxPanel.setPreferredSize(new java.awt.Dimension(340, 200));
         aboutDialogBoxPanel.setLayout(new java.awt.GridBagLayout());
 
-        aboutDialogLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        aboutDialogLabel.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         aboutDialogLabel.setText("Swipe Machine v1.0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 0);
