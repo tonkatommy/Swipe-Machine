@@ -953,6 +953,7 @@ public class SwipeMachine extends javax.swing.JFrame {
 
         if (id.length() >= 6 && id.length() <= 8 && !found && addPerson) {
             swipedInArray.add(new Person(id.toUpperCase(), "-", "Not In Roll"));
+            backUp(swipedInArray.get(swipedInArray.size() - 1));
             swipeListModel.add(0, swipedInArray.get(swipedInArray.size() - 1));
             swipedInCount++;
             swipedNoText.setText(Integer.toString(swipedInCount));
@@ -1090,7 +1091,7 @@ public class SwipeMachine extends javax.swing.JFrame {
         String line = null;
 
 //        Collections.sort(swipeArray);
-        line = person.getServiceNo() + "," + person.getRank() + "," + person.getFirstName() + "," + person.getLastName();
+        line = person.getServiceNo() + "," + person.getRank() + "," + person.getLastName() + "," + person.getFirstName();
 //            lines.add(line);
 
         try {
