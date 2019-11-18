@@ -91,7 +91,6 @@ public class SwipeMachine extends javax.swing.JFrame {
         informationPanel = new javax.swing.JPanel();
         meetingNameLabel = new javax.swing.JLabel();
         meetingNameTextField = new javax.swing.JTextField();
-        dateOfMeetingDatePicker = new org.jdesktop.swingx.JXDatePicker();
         dateOfMeetingLabel = new javax.swing.JLabel();
         noOfMembersLabel = new javax.swing.JLabel();
         noOfMembersFormattedTextField = new javax.swing.JFormattedTextField();
@@ -101,6 +100,7 @@ public class SwipeMachine extends javax.swing.JFrame {
         noRequiredFormattedTextField = new javax.swing.JFormattedTextField();
         swipedNoText = new javax.swing.JTextField();
         swipedNoLabel = new javax.swing.JLabel();
+        dateOfMeeting = new org.jdesktop.swingx.JXDatePicker();
         centerPanel = new javax.swing.JPanel();
         swipedMembersLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -183,6 +183,7 @@ public class SwipeMachine extends javax.swing.JFrame {
         infoLabel.setText("Please swipe your card and check your name is added to the list below");
 
         leftSidePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        leftSidePanel.setMaximumSize(new java.awt.Dimension(760, 32767));
 
         swipedMembersButtonPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)), "Swiped Members List", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 14))); // NOI18N
         swipedMembersButtonPanel.setLayout(new java.awt.GridBagLayout());
@@ -300,17 +301,6 @@ public class SwipeMachine extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 4);
         informationPanel.add(meetingNameTextField, gridBagConstraints);
 
-        dateOfMeetingDatePicker.setToolTipText("Please pick the date here");
-        dateOfMeetingDatePicker.setMaximumSize(new java.awt.Dimension(150, 25));
-        dateOfMeetingDatePicker.setMinimumSize(new java.awt.Dimension(150, 25));
-        dateOfMeetingDatePicker.setPreferredSize(new java.awt.Dimension(150, 25));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 4);
-        informationPanel.add(dateOfMeetingDatePicker, gridBagConstraints);
-
         dateOfMeetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         dateOfMeetingLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         dateOfMeetingLabel.setText("Date of Meeting:");
@@ -349,8 +339,6 @@ public class SwipeMachine extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 4);
         informationPanel.add(noOfMembersFormattedTextField, gridBagConstraints);
 
         percentForQuorumSpinner.setModel(new javax.swing.SpinnerNumberModel(30, 0, 100, 1));
@@ -432,6 +420,18 @@ public class SwipeMachine extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 4);
         informationPanel.add(swipedNoLabel, gridBagConstraints);
 
+        dateOfMeeting.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dateOfMeetingActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 0);
+        informationPanel.add(dateOfMeeting, gridBagConstraints);
+
         javax.swing.GroupLayout leftSidePanelLayout = new javax.swing.GroupLayout(leftSidePanel);
         leftSidePanel.setLayout(leftSidePanelLayout);
         leftSidePanelLayout.setHorizontalGroup(
@@ -441,7 +441,7 @@ public class SwipeMachine extends javax.swing.JFrame {
                 .addGroup(leftSidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(membersListButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(quorumMetPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(informationPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+                    .addComponent(informationPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
                     .addComponent(swipedMembersButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(actionsButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -459,7 +459,7 @@ public class SwipeMachine extends javax.swing.JFrame {
                 .addComponent(swipedMembersButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(actionsButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addContainerGap(208, Short.MAX_VALUE))
         );
 
         centerPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
@@ -495,7 +495,7 @@ public class SwipeMachine extends javax.swing.JFrame {
                 .addGroup(centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(swipedMembersInputText, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(swipedMembersLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 786, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(centerPanelLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(inputLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -796,6 +796,10 @@ public class SwipeMachine extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_noOfMembersFormattedTextFieldKeyReleased
 
+    private void dateOfMeetingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateOfMeetingActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateOfMeetingActionPerformed
+
     public void importList() {
         fileChooser.setCurrentDirectory(new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath()));
         returnValue = fileChooser.showOpenDialog(null);
@@ -820,7 +824,8 @@ public class SwipeMachine extends javax.swing.JFrame {
             updateCount();
         }
     }
-
+    
+    // This function clears the Members list on the right hand side.
     public void clearMemberList() {
         int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to clear the Members List?", "Clear List?", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (reply == JOptionPane.YES_OPTION) {
@@ -1005,7 +1010,7 @@ public class SwipeMachine extends javax.swing.JFrame {
         String line = null;
         Boolean write = true;
 
-        fileChooser.setCurrentDirectory(new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath()));
+        fileChooser.setCurrentDirectory(new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "Swipe Machine/"));
 
         returnValue = fileChooser.showSaveDialog(null);
 
@@ -1163,7 +1168,7 @@ public class SwipeMachine extends javax.swing.JFrame {
     private javax.swing.JPanel actionsButtonPanel;
     private javax.swing.JPanel centerPanel;
     private javax.swing.JButton clearListButton;
-    private org.jdesktop.swingx.JXDatePicker dateOfMeetingDatePicker;
+    private org.jdesktop.swingx.JXDatePicker dateOfMeeting;
     private javax.swing.JLabel dateOfMeetingLabel;
     private javax.swing.JLabel doubleClickLabel;
     private javax.swing.JMenuItem exitMenuItem;
