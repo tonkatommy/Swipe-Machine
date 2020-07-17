@@ -13,6 +13,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
@@ -24,6 +26,7 @@ import javax.swing.JOptionPane;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -35,29 +38,60 @@ import javax.swing.text.StyledDocument;
  */
 public class SwipeMachine extends javax.swing.JFrame {
 
-    DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
+    
     //get current date time with Date()
-    Date date = new Date();
+    
 
-    String currentUsersHomeDir = System.getProperty("user.home");
+    //String currentUsersDocumentsDir = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
 
     /**
      * Creates new form SwipeMachine
      */
     public SwipeMachine() {
+        this.dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy.HHmm");
         initComponents();
+        checkFoldersExist();
+        initMyComponents();
+        
 
         StyledDocument doc = aboutDialogTextPane.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
-
+        
+//        importFileChooser.setCurrentDirectory(new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath()));
+//
+//        saveFileChooser.setCurrentDirectory(new File(swipeMachinePath.toString()));
+//        saveFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+//        saveFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("(Comma Seperated Values) (*.csv)", "csv"));
+//        saveFileChooser.setAcceptAllFileFilterUsed(true);
+        
 //        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
 //        //get current date time with Date()
 //        Date date = new Date();
-        System.out.println(dateFormat.format(date));
-        System.out.println(currentUsersHomeDir);
-        System.out.println(FileSystemView.getFileSystemView().getDefaultDirectory().getPath());
+//        System.out.println(dateFormat.format(date));
+//        System.out.println(currentUsersHomeDir);
+//        System.out.println(FileSystemView.getFileSystemView().getDefaultDirectory().getPath());
+//        System.out.println(currentUsersDocumentsDir);
+    }
+    
+    public void initMyComponents() {
+        
+        date = new Date();
+        
+        currentUsersHomeDir = System.getProperty("user.home");
+        
+        importFileChooser = new JFileChooser();
+        importFileChooser.setCurrentDirectory(new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath()));
+
+        saveFileChooser = new JFileChooser();
+        saveFileChooser.setCurrentDirectory(new File(swipeMachinePath.toString()));
+        saveFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        saveFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("(Comma Seperated Values) (*.csv)", "csv"));
+        saveFileChooser.setAcceptAllFileFilterUsed(true);
+        
+        nomRollArray = new ArrayList<Person>();
+        swipedInArray = new ArrayList<Person>();
     }
 
     /**
@@ -100,7 +134,6 @@ public class SwipeMachine extends javax.swing.JFrame {
         noRequiredFormattedTextField = new javax.swing.JFormattedTextField();
         swipedNoText = new javax.swing.JTextField();
         swipedNoLabel = new javax.swing.JLabel();
-        dateOfMeeting = new org.jdesktop.swingx.JXDatePicker();
         centerPanel = new javax.swing.JPanel();
         swipedMembersLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -420,18 +453,6 @@ public class SwipeMachine extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 4);
         informationPanel.add(swipedNoLabel, gridBagConstraints);
 
-        dateOfMeeting.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dateOfMeetingActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 0);
-        informationPanel.add(dateOfMeeting, gridBagConstraints);
-
         javax.swing.GroupLayout leftSidePanelLayout = new javax.swing.GroupLayout(leftSidePanel);
         leftSidePanel.setLayout(leftSidePanelLayout);
         leftSidePanelLayout.setHorizontalGroup(
@@ -701,7 +722,7 @@ public class SwipeMachine extends javax.swing.JFrame {
         int keyCode = evt.getKeyCode();
         if (keyCode == KeyEvent.VK_ENTER) {
             inputString = swipedMembersInputText.getText();
-            System.out.println(convertToServiceNo(inputString));
+            //System.out.println(convertToServiceNo(inputString));
 
             addToSwipeList(convertToServiceNo(inputString));
 
@@ -800,13 +821,42 @@ public class SwipeMachine extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_dateOfMeetingActionPerformed
 
+    
+    /*
+    Checks if a folder in Documents "Swipe Machine" exists
+    If not then create it    
+    Gets run when program starts
+    */
+    
+    public void checkFoldersExist () {
+        //this.currentUsersDocumentsDir = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+        swipeMachinePath = Path.of(FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\Swipe Machine");
+        backupPath = Path.of(FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\Swipe Machine\\Backup");
+        //System.out.println(swipeMachinePath);
+        //System.out.println(backupPath);
+        
+        
+        try {
+            if (Files.notExists(swipeMachinePath)) {
+                Files.createDirectory(swipeMachinePath);
+            }
+            if (Files.notExists(backupPath)) {
+                Files.createDirectory(backupPath);
+            }
+        }
+        catch (IOException ex) {
+            Logger.getLogger(SwipeMachine.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
     public void importList() {
-        fileChooser.setCurrentDirectory(new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath()));
-        returnValue = fileChooser.showOpenDialog(null);
+//        importFileChooser.setCurrentDirectory(new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath()));
+        returnValue = importFileChooser.showOpenDialog(null);
 
         if (returnValue == JFileChooser.APPROVE_OPTION) {
 
-            File selectedFile = fileChooser.getSelectedFile();
+            File selectedFile = importFileChooser.getSelectedFile();
 
 //                    System.out.println("File chosen");
 //                    System.out.println(fileChooser.getName(selectedFile));
@@ -833,6 +883,11 @@ public class SwipeMachine extends javax.swing.JFrame {
             nomRollListModel.clear();
             updateCount();
         }
+    }
+    
+    // This function will removed the selected member in the Swiped List.
+    public void removeSeletedMember(){
+        
     }
 
     public ArrayList<String> readFile(String fileName) {
@@ -863,7 +918,7 @@ public class SwipeMachine extends javax.swing.JFrame {
 
         ArrayList<Person> tempPersonList = new ArrayList<>();
 
-        for (int i = 1; i < stringList.size(); i++) {
+        for (int i = 1; i <= stringList.size(); i++) {
             String[] nameArray = stringList.get(i - 1).split(",");
 
             switch (nameArray.length) {
@@ -987,11 +1042,16 @@ public class SwipeMachine extends javax.swing.JFrame {
 
     }
 
+    /** 
+    * checkQuorum will check if the current swipedInCount is less
+    * than the quorumCount and update the quorumMetLabel accordingly.
+    */
+    
     public void checkQuorum() {
         if (swipedInCount < quorumCount) {
             quorumMetLabel.setForeground(new Color(255, 0, 50));
             quorumMetLabel.setText("QUORUM NOT MET");
-        } else if (swipedInCount > quorumCount) {
+        } else {
             quorumMetLabel.setForeground(new Color(0, 200, 0));
             quorumMetLabel.setText("QUORUM OBTAINED");
         }
@@ -1005,55 +1065,129 @@ public class SwipeMachine extends javax.swing.JFrame {
         noOfMembersFormattedTextField.setText(Integer.toString(nomRollCount));
         noRequiredFormattedTextField.setText(Integer.toString(quorumCount));
     }
+    
+    public String getExtension(String fileName) {
+        String ext = "";
+        
+        if (fileName != null && !fileName.isEmpty()) {
+            int dot = fileName.lastIndexOf(".");
+            if ((dot >= 0) && (dot < fileName.length() - 1)) {
+                ext = fileName.substring(dot + 1);
+            }
+        }
+        
+        return ext;
+    }
+    
+    public String removeExtension(String fileName) {
+        String extRemoved = "";
+        
+        if (fileName != null && !fileName.isEmpty()) {
+            int dot = fileName.lastIndexOf(".");
+            if ((dot >= 0) && (dot < fileName.length() - 1)) {
+                extRemoved = fileName.substring(0, dot);
+            }
+        }
+        
+        return extRemoved;
+    }
 
     public void saveToTextFile() {
 
         String line = null;
-        Boolean write = true;
-
-        fileChooser.setCurrentDirectory(new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "Swipe Machine/"));
-
-        returnValue = fileChooser.showSaveDialog(null);
+        Boolean write = false;
+//        File selectedFile;
+        int reply = 0;
+        
+//        saveFileChooser.setCurrentDirectory(new File(swipeMachinePath.toString()));
+//        saveFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+//        saveFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("(Comma Seperated Values) (*.csv)", "csv"));
+//        saveFileChooser.setAcceptAllFileFilterUsed(true);
+        
+        returnValue = saveFileChooser.showSaveDialog(null);
 
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-
-            File selectedFile = fileChooser.getSelectedFile();
-
-            if (selectedFile.exists()) {
-                int reply = JOptionPane.showConfirmDialog(null, "Do you want to overwrite the selected file?", "File Exists!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-                if (reply == JOptionPane.NO_OPTION) {
-                    write = false;
+            
+            do {
+                selectedFile = saveFileChooser.getSelectedFile();
+                
+                if (selectedFile.exists()) {
+                    reply = JOptionPane.showConfirmDialog(null, "Do you want to overwrite the selected file?", "File Exists!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    if (reply == JOptionPane.YES_OPTION) {
+                        
+//                        System.out.println("before check");
+//                        if (getExtension(selectedFile.toString()).equalsIgnoreCase("csv")) {
+//                            // file is ok
+//                        } else {
+//                            selectedFile = new File(selectedFile.getParentFile(), selectedFile.getName() + ".csv");
+//                        }
+//                        
+//                        System.out.println("after check");
+//                        
+//                        absenteeFile = new File(selectedFile.getParentFile(), selectedFile.getName() + " - ABSETEES.csv");
+//                        System.out.println(absenteeFile);
+                        
+                        write = true;
+                    } else if (reply == JOptionPane.NO_OPTION){
+                        returnValue = saveFileChooser.showSaveDialog(null);
+                    }
+                } else {
+                    write = true;
                 }
-            }
+            } while (write == false && reply == JOptionPane.NO_OPTION && returnValue == JFileChooser.APPROVE_OPTION);
 
             if (write) {
+                
+                System.out.println("before check");
+                if (getExtension(selectedFile.toString()).equalsIgnoreCase("csv")) {
+                    // file is ok
+                } else {
+                    selectedFile = new File(selectedFile.getParentFile(), selectedFile.getName() + ".csv");
+                }
+
+                System.out.println("after check");
+
+                absenteeFile = new File(selectedFile.getParentFile(), selectedFile.getName() + " - ABSETEES.csv");
+                System.out.println(absenteeFile);
+                
+               // selectedDate = dateOfMeeting.getDate();
+                
                 try {
-                    FileWriter writer = new FileWriter(selectedFile + ".csv", false);
+                    FileWriter writer = new FileWriter(selectedFile, false);
 
                     BufferedWriter bufferedWriter = new BufferedWriter(writer);
 
-                    line = meetingNameTextField.getText();
+                    line = "Meeting Name:," + meetingNameTextField.getText();
+
+                    bufferedWriter.write(line);
+                    bufferedWriter.newLine();
+                    
+                    if (selectedDate != null) {
+                        line = "Date of meeting:," + selectedDateFormat.format(selectedDate);
+                    } else {
+                        line = "Date of meeting:," + selectedDateFormat.format(date);
+                    }
+                    
+                    
+                    bufferedWriter.write(line);
+                    bufferedWriter.newLine();
+
+                    line = "Number of Members:," + noOfMembersFormattedTextField.getText();
 
                     bufferedWriter.write(line);
                     bufferedWriter.newLine();
 
-                    line = "Number of Members: " + noOfMembersFormattedTextField.getText();
+                    line = "Quorum %:," + percentForQuorumSpinner.getValue();
 
                     bufferedWriter.write(line);
                     bufferedWriter.newLine();
 
-                    line = "Quorum %: " + percentForQuorumSpinner.getValue();
+                    line = "No. to meet quorum:," + noRequiredFormattedTextField.getText();
 
                     bufferedWriter.write(line);
                     bufferedWriter.newLine();
 
-                    line = "No. to meet quorum: " + noRequiredFormattedTextField.getText();
-
-                    bufferedWriter.write(line);
-                    bufferedWriter.newLine();
-
-                    line = "No. of Swiped Members: " + swipedNoText.getText();
+                    line = "No. of Swiped Members:," + swipedNoText.getText();
 
                     bufferedWriter.write(line);
                     bufferedWriter.newLine();
@@ -1066,7 +1200,7 @@ public class SwipeMachine extends javax.swing.JFrame {
                     bufferedWriter.newLine();
 
                     for (Person per : swipedInArray) {
-                        line = per.toString();
+                        line = per.getServiceNo() + "," + per.getRank() + "," + per.getLastName() + "," + per.getFirstName();
 
                         bufferedWriter.write(line);
                         bufferedWriter.newLine();
@@ -1074,6 +1208,10 @@ public class SwipeMachine extends javax.swing.JFrame {
 
                     bufferedWriter.flush();
                     bufferedWriter.close();
+                    
+                    saveAbsentees();
+                    
+                    JOptionPane.showMessageDialog(null,"Swiped members saved to:\n" + selectedFile.getAbsolutePath() + "\nAbsentees saved to:\n" + absenteeFile.getAbsolutePath(), "Files Saved", JOptionPane.INFORMATION_MESSAGE);
 
                 } catch (FileNotFoundException e) {
                     System.out.println("Unable to find file! " + e);
@@ -1084,7 +1222,86 @@ public class SwipeMachine extends javax.swing.JFrame {
         }
 
     }
+    
+    
+    public void saveAbsentees() {
+        
+        String line;
+                
+        try {
+            FileWriter writer = new FileWriter(removeExtension(selectedFile.toString()) + " - ABSENTEES.csv", false);
 
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+
+            line = "Meeting Name:," + meetingNameTextField.getText();
+
+            bufferedWriter.write(line);
+            bufferedWriter.newLine();
+
+            if (selectedDate != null) {
+                line = "Date of meeting:," + selectedDateFormat.format(selectedDate);
+            } else {
+                line = "Date of meeting:," + selectedDateFormat.format(date);
+            }
+
+
+            bufferedWriter.write(line);
+            bufferedWriter.newLine();
+
+            line = "Number of Members:," + noOfMembersFormattedTextField.getText();
+
+            bufferedWriter.write(line);
+            bufferedWriter.newLine();
+
+            line = "Quorum %:," + percentForQuorumSpinner.getValue();
+
+            bufferedWriter.write(line);
+            bufferedWriter.newLine();
+
+            line = "No. to meet quorum:," + noRequiredFormattedTextField.getText();
+
+            bufferedWriter.write(line);
+            bufferedWriter.newLine();
+
+            line = "No. of Swiped Members:," + swipedNoText.getText();
+
+            bufferedWriter.write(line);
+            bufferedWriter.newLine();
+            bufferedWriter.newLine();
+
+            line = "ABSENTEES";
+
+            bufferedWriter.write(line);
+            bufferedWriter.newLine();
+            bufferedWriter.newLine();
+
+            for (Person per : nomRollArray) {
+
+                if (!swipedInArray.contains(per)) {
+                    line = per.getServiceNo() + "," + per.getRank() + "," + per.getLastName() + "," + per.getFirstName();
+
+                    bufferedWriter.write(line);
+                    bufferedWriter.newLine();
+                }
+            }
+
+            bufferedWriter.flush();
+            bufferedWriter.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to find file! " + e);
+        } catch (IOException e) {
+            System.out.println("Error writing File!" + e);
+        }
+    }
+
+    /**********************************************************
+     * 
+     * This function will back up the current swiped
+     * Person to a backup file located in the ./backup/ folder
+     * 
+     **********************************************************/
+    
     public void backUp(Person person) {
 
 //        ArrayList<String> lines = new ArrayList<>();
@@ -1095,7 +1312,12 @@ public class SwipeMachine extends javax.swing.JFrame {
 //            lines.add(line);
 
         try {
-            FileWriter writer = new FileWriter("./backup/" + meetingNameTextField.getText() + "-" + dateFormat.format(date) + ".csv", true);
+            FileWriter writer;
+            if (meetingNameTextField.getText().compareTo("") == 0) {
+                writer = new FileWriter(backupPath.toString() + "\\Untitled - " + dateTimeFormat.format(date) + ".csv", true);
+            } else {
+                writer = new FileWriter(backupPath.toString() + "\\" + meetingNameTextField.getText() + " - " + dateTimeFormat.format(date) + ".csv", true);
+            }
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
 
 //            for (String per : lines) {
@@ -1152,13 +1374,31 @@ public class SwipeMachine extends javax.swing.JFrame {
     }
 
     // My Variables
-    private JFileChooser fileChooser = new JFileChooser();
-    private int returnValue, nomRollCount, quorumCount, swipedInCount;
-    private ArrayList<Person> nomRollArray = new ArrayList<Person>();
-    private ArrayList<Person> swipedInArray = new ArrayList<Person>();
+    private JFileChooser importFileChooser;
+    private JFileChooser saveFileChooser;
+    
+    private File selectedFile;
+    private File absenteeFile;
+    private Path swipeMachinePath;
+    private Path backupPath;
+    
+    private int returnValue;
+    private int nomRollCount;
+    private int quorumCount;
+    private int swipedInCount;
+
+    private ArrayList<Person> nomRollArray;
+    private ArrayList<Person> swipedInArray;
     private final DefaultListModel<Person> swipeListModel = new DefaultListModel<>();
     private final DefaultListModel<Person> nomRollListModel = new DefaultListModel<>();
+    
     private String inputString;
+    private String currentUsersHomeDir;
+    
+    private Date date;
+    private DateFormat dateTimeFormat;
+    private Date selectedDate;
+    private DateFormat selectedDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog aboutDialogBox;
@@ -1169,7 +1409,6 @@ public class SwipeMachine extends javax.swing.JFrame {
     private javax.swing.JPanel actionsButtonPanel;
     private javax.swing.JPanel centerPanel;
     private javax.swing.JButton clearListButton;
-    private org.jdesktop.swingx.JXDatePicker dateOfMeeting;
     private javax.swing.JLabel dateOfMeetingLabel;
     private javax.swing.JLabel doubleClickLabel;
     private javax.swing.JMenuItem exitMenuItem;
