@@ -13,8 +13,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
@@ -134,6 +136,7 @@ public class SwipeMachine extends javax.swing.JFrame {
         noRequiredFormattedTextField = new javax.swing.JFormattedTextField();
         swipedNoText = new javax.swing.JTextField();
         swipedNoLabel = new javax.swing.JLabel();
+        dateOfMeeting = new org.jdesktop.swingx.JXDatePicker();
         centerPanel = new javax.swing.JPanel();
         swipedMembersLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -162,7 +165,7 @@ public class SwipeMachine extends javax.swing.JFrame {
         aboutDialogBoxPanel.setLayout(new java.awt.GridBagLayout());
 
         aboutDialogLabel.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        aboutDialogLabel.setText("Swipe Machine v1.0");
+        aboutDialogLabel.setText("Swipe Machine v1.1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 0);
         aboutDialogBoxPanel.add(aboutDialogLabel, gridBagConstraints);
@@ -195,7 +198,7 @@ public class SwipeMachine extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Swipe Machine v1.0");
+        setTitle("Swipe Machine v1.1");
         setExtendedState(MAXIMIZED_BOTH);
         setMinimumSize(new java.awt.Dimension(1000, 700));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -209,7 +212,7 @@ public class SwipeMachine extends javax.swing.JFrame {
 
         titleLabel.setFont(new java.awt.Font("Calibri", 1, 30)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("Swipe Machine v1.0");
+        titleLabel.setText("Swipe Machine v1.1");
 
         infoLabel.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         infoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -453,6 +456,13 @@ public class SwipeMachine extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 4);
         informationPanel.add(swipedNoLabel, gridBagConstraints);
 
+        dateOfMeeting.setPreferredSize(new java.awt.Dimension(150, 25));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 0);
+        informationPanel.add(dateOfMeeting, gridBagConstraints);
+
         javax.swing.GroupLayout leftSidePanelLayout = new javax.swing.GroupLayout(leftSidePanel);
         leftSidePanel.setLayout(leftSidePanelLayout);
         leftSidePanelLayout.setHorizontalGroup(
@@ -462,7 +472,7 @@ public class SwipeMachine extends javax.swing.JFrame {
                 .addGroup(leftSidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(membersListButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(quorumMetPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(informationPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                    .addComponent(informationPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                     .addComponent(swipedMembersButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(actionsButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -480,7 +490,7 @@ public class SwipeMachine extends javax.swing.JFrame {
                 .addComponent(swipedMembersButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(actionsButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(208, Short.MAX_VALUE))
+                .addContainerGap(203, Short.MAX_VALUE))
         );
 
         centerPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
@@ -667,6 +677,11 @@ public class SwipeMachine extends javax.swing.JFrame {
                 aboutMenuItemMouseReleased(evt);
             }
         });
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed(evt);
+            }
+        });
         helpMenu.add(aboutMenuItem);
 
         topMenuBar.add(helpMenu);
@@ -821,6 +836,10 @@ public class SwipeMachine extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_dateOfMeetingActionPerformed
 
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
+
     
     /*
     Checks if a folder in Documents "Swipe Machine" exists
@@ -830,10 +849,16 @@ public class SwipeMachine extends javax.swing.JFrame {
     
     public void checkFoldersExist () {
         //this.currentUsersDocumentsDir = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
-        swipeMachinePath = Path.of(FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\Swipe Machine");
-        backupPath = Path.of(FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\Swipe Machine\\Backup");
-        //System.out.println(swipeMachinePath);
-        //System.out.println(backupPath);
+        
+        // these are for JDK14
+//        swipeMachinePath = Path.of(FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\Swipe Machine");
+//        backupPath = Path.of(FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\Swipe Machine\\Backup");
+
+        //these are for JDK8
+        swipeMachinePath = Paths.get(FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\Swipe Machine");
+        backupPath = Paths.get(FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\Swipe Machine\\Backup");
+//        System.out.println(swipeMachinePath);
+//        System.out.println(backupPath);
         
         
         try {
@@ -975,7 +1000,8 @@ public class SwipeMachine extends javax.swing.JFrame {
 
                 // play reject sound
                 try {
-                    AudioClip clip = Applet.newAudioClip(new URL("file", "localhost", "sounds/reject2.wav"));
+//                    AudioClip clip = Applet.newAudioClip(new URL("file", "localhost", "sounds/reject2.wav"));
+                    AudioClip clip = Applet.newAudioClip(new URL("file", "localhost", "sounds/Fail_Alert.wav"));
                     clip.play();
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(SwipeMachine.class.getName()).log(Level.SEVERE, null, ex);
@@ -995,7 +1021,8 @@ public class SwipeMachine extends javax.swing.JFrame {
 
                     // play success sound
                     try {
-                        AudioClip clip = Applet.newAudioClip(new URL("file", "localhost", "sounds/accept2.wav"));
+//                        AudioClip clip = Applet.newAudioClip(new URL("file", "localhost", "sounds/accept2.wav"));
+                        AudioClip clip = Applet.newAudioClip(new URL("file", "localhost", "sounds/Success_Alert.wav"));
                         clip.play();
                     } catch (MalformedURLException ex) {
                         Logger.getLogger(SwipeMachine.class.getName()).log(Level.SEVERE, null, ex);
@@ -1033,7 +1060,8 @@ public class SwipeMachine extends javax.swing.JFrame {
             swipeListModel.remove(0);
             swipedInCount--;
             swipedNoText.setText(Integer.toString(swipedInCount));
-
+            
+            updateCount();
             checkQuorum();
         }
     }
@@ -1147,10 +1175,10 @@ public class SwipeMachine extends javax.swing.JFrame {
 
                 System.out.println("after check");
 
-                absenteeFile = new File(selectedFile.getParentFile(), selectedFile.getName() + " - ABSETEES.csv");
+                absenteeFile = new File(selectedFile.getParentFile(), selectedFile.getName() + " - ABSENTEES.csv");
                 System.out.println(absenteeFile);
                 
-               // selectedDate = dateOfMeeting.getDate();
+                selectedDate = dateOfMeeting.getDate();
                 
                 try {
                     FileWriter writer = new FileWriter(selectedFile, false);
@@ -1409,6 +1437,7 @@ public class SwipeMachine extends javax.swing.JFrame {
     private javax.swing.JPanel actionsButtonPanel;
     private javax.swing.JPanel centerPanel;
     private javax.swing.JButton clearListButton;
+    private org.jdesktop.swingx.JXDatePicker dateOfMeeting;
     private javax.swing.JLabel dateOfMeetingLabel;
     private javax.swing.JLabel doubleClickLabel;
     private javax.swing.JMenuItem exitMenuItem;
